@@ -1,4 +1,4 @@
-import { test, expect } from "@/fixtures/base-ui-test";
+import { test } from "@/fixtures/base-ui-test";
 import { testUsers, invalidCredentials } from "@data/test-data/user-data";
 import { errorMessages } from "@data/test-data/error-messages";
 
@@ -15,7 +15,6 @@ test.describe("Login Tests", () => {
         await loginPage.login();
 
         await productsPage.verifyPageLoaded();
-        await productsPage.verifyProductsAreDisplayed();
       },
     );
   });
@@ -50,10 +49,14 @@ test.describe("Login Tests", () => {
     ];
 
     negativeTestCases.forEach(({ name, credentials, expectedError }) => {
-      test(name, { tag: ["@authentication", "@negative"] }, async ({ loginPage }) => {
-        await loginPage.login(credentials.username, credentials.password);
-        await loginPage.verifyErrorMessageIsDisplayed(expectedError);
-      });
+      test(
+        name,
+        { tag: ["@authentication", "@negative"] },
+        async ({ loginPage }) => {
+          await loginPage.login(credentials);
+          await loginPage.verifyErrorMessageIsDisplayed(expectedError);
+        },
+      );
     });
 
     test(

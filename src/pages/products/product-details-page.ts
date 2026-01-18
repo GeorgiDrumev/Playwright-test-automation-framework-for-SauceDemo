@@ -9,13 +9,12 @@ export interface ActualProductDetails {
 }
 
 export class ProductDetailsPage extends BasePage {
-  readonly productName: Locator;
-  readonly productDescription: Locator;
-  readonly productPrice: Locator;
-  readonly productImage: Locator;
-  readonly addToCartButton: Locator;
-  readonly removeButton: Locator;
-  readonly backButton: Locator;
+  private readonly productName: Locator;
+  private readonly productDescription: Locator;
+  private readonly productPrice: Locator;
+  private readonly addToCartButton: Locator;
+  private readonly removeButton: Locator;
+  private readonly backButton: Locator;
   readonly url = "https://www.saucedemo.com/inventory-item.html";
   readonly screenshotFolder = "product-details";
 
@@ -24,7 +23,6 @@ export class ProductDetailsPage extends BasePage {
     this.productName = page.locator(".inventory_details_name");
     this.productDescription = page.locator(".inventory_details_desc");
     this.productPrice = page.locator(".inventory_details_price");
-    this.productImage = page.locator(".inventory_details_img");
     this.addToCartButton = page.locator('[data-test^="add-to-cart"]');
     this.removeButton = page.locator('[data-test^="remove"]');
     this.backButton = page.locator('[data-test="back-to-products"]');
@@ -36,18 +34,6 @@ export class ProductDetailsPage extends BasePage {
     } else {
       await super.goto();
     }
-  }
-
-  public async getProductName(): Promise<string> {
-    return (await this.productName.textContent()) || "";
-  }
-
-  public async getProductDescription(): Promise<string> {
-    return (await this.productDescription.textContent()) || "";
-  }
-
-  public async getProductPrice(): Promise<string> {
-    return (await this.productPrice.textContent()) || "";
   }
 
   public async addToCart() {
@@ -67,15 +53,14 @@ export class ProductDetailsPage extends BasePage {
   }
 
   public async verifyProductDetails(expectedProduct: ProductData) {
-    const actualDetails = {
-      name: await this.getProductName(),
-      description: await this.getProductDescription(),
-      price: await this.getProductPrice(),
-    };
+    const actualName = (await this.productName.textContent()) || "";
+    const actualDescription =
+      (await this.productDescription.textContent()) || "";
+    const actualPrice = (await this.productPrice.textContent()) || "";
 
-    expect(actualDetails.name).toBe(expectedProduct.name);
-    expect(actualDetails.description).toBe(expectedProduct.description);
-    expect(actualDetails.price).toBe(`$${expectedProduct.price}`);
+    expect(actualName).toBe(expectedProduct.name);
+    expect(actualDescription).toBe(expectedProduct.description);
+    expect(actualPrice).toBe(`$${expectedProduct.price}`);
   }
 
   public async verifyProductIsInCart() {

@@ -12,7 +12,7 @@ test.describe("Cart Page Visual Tests", () => {
     { tag: ["@cart", "@visual"] },
     async ({ productsPage, cartPage }) => {
       await productsPage.verifyPageLoaded();
-      await productsPage.clickCartIcon();
+      await productsPage.navigateToCart();
       await cartPage.verifyPageLoaded();
       await cartPage.compareScreenshot("cart-page-empty");
     },
@@ -26,7 +26,7 @@ test.describe("Cart Page Visual Tests", () => {
       await productsPage.addProductToCart(expectedProducts[0].name);
       await productsPage.addProductToCart(expectedProducts[1].name);
       await productsPage.addProductToCart(expectedProducts[2].name);
-      await productsPage.clickCartIcon();
+      await productsPage.navigateToCart();
       await cartPage.verifyPageLoaded();
       await cartPage.compareScreenshot("cart-page-with-items");
     },

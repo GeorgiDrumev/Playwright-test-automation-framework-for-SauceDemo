@@ -3,11 +3,11 @@ import { WaitUtils } from "@/utils/wait-utils";
 import { BasePage } from "@/pages/base-page";
 
 export class CheckoutSuccessPage extends BasePage {
-  readonly pageTitle: Locator;
-  readonly waitUtils: WaitUtils;
-  readonly completeHeader: Locator;
-  readonly completeText: Locator;
-  readonly backHomeButton: Locator;
+  private readonly pageTitle: Locator;
+  private readonly waitUtils: WaitUtils;
+  private readonly completeHeader: Locator;
+  private readonly completeText: Locator;
+  private readonly backHomeButton: Locator;
   readonly url = "https://www.saucedemo.com/checkout-complete.html";
   readonly screenshotFolder = "checkout";
 
@@ -20,24 +20,8 @@ export class CheckoutSuccessPage extends BasePage {
     this.backHomeButton = page.locator('[data-test="back-to-products"]');
   }
 
-  public async getPageTitle(): Promise<string> {
-    return (await this.pageTitle.textContent()) || "";
-  }
-
-  public async getCompleteHeader(): Promise<string> {
-    return (await this.completeHeader.textContent()) || "";
-  }
-
-  public async getCompleteText(): Promise<string> {
-    return (await this.completeText.textContent()) || "";
-  }
-
   public async clickBackHome() {
     await this.backHomeButton.click();
-  }
-
-  public async isOrderComplete(): Promise<boolean> {
-    return await this.completeHeader.isVisible();
   }
 
   public async verifyPageLoaded() {

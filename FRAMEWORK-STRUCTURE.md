@@ -1,5 +1,11 @@
 # Design Patterns & Architectural Decisions
 
+## Tech Stack
+- **Playwright** - End-to-end testing framework
+- **TypeScript** - Type-safe programming language
+
+---
+
 ## Table of Contents
 1. [Testing Approach](#testing-approach)
 2. [Design Patterns](#design-patterns)
@@ -23,6 +29,15 @@ Tests are run on 2 different configurations:
 
 ### Test Isolation
 Each worker has a different session, and each test has a different session so it starts clean. Nothing is saved in the backend.
+
+### Test Organization
+Tests use tags for easier navigation and filtering in test reports:
+- `@authentication`, `@cart`, `@checkout`, `@products`, `@navigation` - Feature-based tags
+- `@positive`, `@negative`, `@edge-case` - Test type tags
+- `@visual`, `@performance` - Special test category tags
+- `@known-issue` - Documents known application bugs
+
+Tags enable filtering in HTML reports and running specific test subsets via CLI.
 
 ---
 
@@ -197,6 +212,8 @@ tests/                  # Test Suites
 - **Path aliases** (@/ for src, @data for test data)
 - **Consistent naming conventions**
 - **KISS principle** (Keep It Simple, Stupid)
+- **Code Formatter** - Prettier integrated for automatic code formatting (`npm run format`)
+- **Git Hooks** - Husky and lint-staged run Prettier automatically on staged files before every commit. To enable hooks after cloning, run `npm install` (which triggers Husky's setup via the `prepare` script).
 
 ---
 

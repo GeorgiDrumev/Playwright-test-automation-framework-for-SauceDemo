@@ -10,7 +10,7 @@ test.describe("Checkout User Information Tests", () => {
     await productsPage.verifyPageLoaded();
 
     await productsPage.addProductToCart(expectedProducts[0].name);
-    await productsPage.clickCartIcon();
+    await productsPage.navigateToCart();
     await cartPage.verifyPageLoaded();
     await cartPage.clickCheckout();
   });
@@ -38,11 +38,7 @@ test.describe("Checkout User Information Tests", () => {
         async ({ checkoutUserInformationPage, checkoutDetailsPage }) => {
           await checkoutUserInformationPage.verifyPageLoaded();
 
-          await checkoutUserInformationPage.fillCheckoutInformation(
-            data.firstName,
-            data.lastName,
-            data.postalCode,
-          );
+          await checkoutUserInformationPage.fillCheckoutInformation(data);
           await checkoutUserInformationPage.clickContinue();
 
           await checkoutDetailsPage.verifyPageLoaded();
@@ -95,11 +91,7 @@ test.describe("Checkout User Information Tests", () => {
         async ({ checkoutUserInformationPage }) => {
           await checkoutUserInformationPage.verifyPageLoaded();
 
-          await checkoutUserInformationPage.fillCheckoutInformation(
-            data.firstName,
-            data.lastName,
-            data.postalCode,
-          );
+          await checkoutUserInformationPage.fillCheckoutInformation(data);
           await checkoutUserInformationPage.clickContinue();
 
           await checkoutUserInformationPage.verifyErrorMessageDisplayed(

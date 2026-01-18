@@ -12,16 +12,19 @@ test.describe("Checkout Details Page Visual Tests", () => {
   test(
     "should match checkout details page with single item",
     { tag: ["@checkout", "@visual"] },
-    async ({ productsPage, cartPage, checkoutUserInformationPage, checkoutDetailsPage }) => {
+    async ({
+      productsPage,
+      cartPage,
+      checkoutUserInformationPage,
+      checkoutDetailsPage,
+    }) => {
       await productsPage.addProductToCart(expectedProducts[0].name);
-      await productsPage.clickCartIcon();
+      await productsPage.navigateToCart();
       await cartPage.verifyPageLoaded();
       await cartPage.clickCheckout();
       await checkoutUserInformationPage.verifyPageLoaded();
       await checkoutUserInformationPage.fillCheckoutInformation(
-        checkoutInformation.validInfo.firstName,
-        checkoutInformation.validInfo.lastName,
-        checkoutInformation.validInfo.postalCode,
+        checkoutInformation.validInfo,
       );
       await checkoutUserInformationPage.clickContinue();
       await checkoutDetailsPage.verifyPageLoaded();
@@ -34,18 +37,21 @@ test.describe("Checkout Details Page Visual Tests", () => {
   test(
     "should match checkout details page with multiple items",
     { tag: ["@checkout", "@visual"] },
-    async ({ productsPage, cartPage, checkoutUserInformationPage, checkoutDetailsPage }) => {
+    async ({
+      productsPage,
+      cartPage,
+      checkoutUserInformationPage,
+      checkoutDetailsPage,
+    }) => {
       await productsPage.addProductToCart(expectedProducts[0].name);
       await productsPage.addProductToCart(expectedProducts[1].name);
       await productsPage.addProductToCart(expectedProducts[2].name);
-      await productsPage.clickCartIcon();
+      await productsPage.navigateToCart();
       await cartPage.verifyPageLoaded();
       await cartPage.clickCheckout();
       await checkoutUserInformationPage.verifyPageLoaded();
       await checkoutUserInformationPage.fillCheckoutInformation(
-        checkoutInformation.validInfo.firstName,
-        checkoutInformation.validInfo.lastName,
-        checkoutInformation.validInfo.postalCode,
+        checkoutInformation.validInfo,
       );
       await checkoutUserInformationPage.clickContinue();
       await checkoutDetailsPage.verifyPageLoaded();

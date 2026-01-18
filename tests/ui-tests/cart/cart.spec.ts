@@ -9,19 +9,10 @@ test.describe("Cart Tests", () => {
   });
 
   test(
-    "should display cart page when cart icon is clicked",
-    { tag: ["@cart", "@positive"] },
-    async ({ productsPage, cartPage }) => {
-      await productsPage.clickCartIcon();
-      await cartPage.verifyPageLoaded();
-    },
-  );
-
-  test(
     "should display empty cart initially",
     { tag: ["@cart", "@positive"] },
     async ({ productsPage, cartPage }) => {
-      await productsPage.clickCartIcon();
+      await productsPage.navigateToCart();
       await cartPage.verifyPageLoaded();
       await cartPage.verifyCartIsEmpty();
     },
@@ -36,7 +27,7 @@ test.describe("Cart Tests", () => {
 
       await productsPage.addProductToCart(product1);
       await productsPage.addProductToCart(product2);
-      await productsPage.clickCartIcon();
+      await productsPage.navigateToCart();
 
       await cartPage.verifyProductsInCart([product1, product2]);
       await cartPage.verifyCartItemCount(2);
@@ -50,7 +41,7 @@ test.describe("Cart Tests", () => {
       const product = expectedProducts[0].name;
 
       await productsPage.addProductToCart(product);
-      await productsPage.clickCartIcon();
+      await productsPage.navigateToCart();
       await cartPage.verifyProductInCart(product);
 
       await cartPage.removeItemByName(product);
@@ -65,7 +56,7 @@ test.describe("Cart Tests", () => {
       await productsPage.addProductToCart(expectedProducts[0].name);
       await productsPage.addProductToCart(expectedProducts[1].name);
       await productsPage.addProductToCart(expectedProducts[2].name);
-      await productsPage.clickCartIcon();
+      await productsPage.navigateToCart();
 
       await cartPage.verifyCartItemCount(3);
 
@@ -84,7 +75,7 @@ test.describe("Cart Tests", () => {
     "should navigate back to products page via Continue Shopping",
     { tag: ["@cart", "@positive"] },
     async ({ productsPage, cartPage }) => {
-      await productsPage.clickCartIcon();
+      await productsPage.navigateToCart();
       await cartPage.verifyPageLoaded();
 
       await cartPage.clickContinueShopping();
@@ -97,7 +88,7 @@ test.describe("Cart Tests", () => {
     { tag: ["@cart", "@positive"] },
     async ({ productsPage, cartPage, checkoutUserInformationPage }) => {
       await productsPage.addProductToCart(expectedProducts[0].name);
-      await productsPage.clickCartIcon();
+      await productsPage.navigateToCart();
 
       await cartPage.clickCheckout();
       await checkoutUserInformationPage.verifyPageLoaded();
@@ -111,7 +102,7 @@ test.describe("Cart Tests", () => {
       const product = expectedProducts[0];
 
       await productsPage.addProductToCart(product.name);
-      await productsPage.clickCartIcon();
+      await productsPage.navigateToCart();
       await cartPage.verifyPageLoaded();
 
       await cartPage.clickItemByName(product.name);

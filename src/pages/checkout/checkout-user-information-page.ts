@@ -1,16 +1,17 @@
 import { Page, Locator, expect } from "@playwright/test";
 import { WaitUtils } from "@/utils/wait-utils";
 import { BasePage } from "@/pages/base-page";
+import { CheckoutInformation } from "@data/test-data/checkout-data";
 
 export class CheckoutUserInformationPage extends BasePage {
-  readonly pageTitle: Locator;
-  readonly waitUtils: WaitUtils;
-  readonly firstNameInput: Locator;
-  readonly lastNameInput: Locator;
-  readonly postalCodeInput: Locator;
-  readonly continueButton: Locator;
-  readonly cancelButton: Locator;
-  readonly errorMessage: Locator;
+  private readonly pageTitle: Locator;
+  private readonly waitUtils: WaitUtils;
+  private readonly firstNameInput: Locator;
+  private readonly lastNameInput: Locator;
+  private readonly postalCodeInput: Locator;
+  private readonly continueButton: Locator;
+  private readonly cancelButton: Locator;
+  private readonly errorMessage: Locator;
   readonly url = "https://www.saucedemo.com/checkout-step-one.html";
   readonly screenshotFolder = "checkout";
 
@@ -26,14 +27,10 @@ export class CheckoutUserInformationPage extends BasePage {
     this.errorMessage = page.locator('[data-test="error"]');
   }
 
-  public async fillCheckoutInformation(
-    firstName: string,
-    lastName: string,
-    postalCode: string,
-  ) {
-    await this.firstNameInput.fill(firstName);
-    await this.lastNameInput.fill(lastName);
-    await this.postalCodeInput.fill(postalCode);
+  public async fillCheckoutInformation(info: CheckoutInformation) {
+    await this.firstNameInput.fill(info.firstName);
+    await this.lastNameInput.fill(info.lastName);
+    await this.postalCodeInput.fill(info.postalCode);
   }
 
   public async clickContinue() {
@@ -46,10 +43,6 @@ export class CheckoutUserInformationPage extends BasePage {
 
   public async getErrorMessage(): Promise<string> {
     return (await this.errorMessage.textContent()) || "";
-  }
-
-  public async isErrorDisplayed(): Promise<boolean> {
-    return await this.errorMessage.isVisible();
   }
 
   public async verifyPageLoaded() {

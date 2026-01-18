@@ -1,14 +1,14 @@
 import { Page, Locator, expect } from "@playwright/test";
 
 export class BurgerMenu {
-  readonly page: Page;
-  readonly menuButton: Locator;
-  readonly closeButton: Locator;
-  readonly allItemsLink: Locator;
-  readonly aboutLink: Locator;
-  readonly logoutLink: Locator;
-  readonly resetAppLink: Locator;
-  readonly menuOverlay: Locator;
+  private readonly page: Page;
+  private readonly menuButton: Locator;
+  private readonly closeButton: Locator;
+  private readonly allItemsLink: Locator;
+  private readonly aboutLink: Locator;
+  private readonly logoutLink: Locator;
+  private readonly resetAppLink: Locator;
+  private readonly menuOverlay: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -44,10 +44,6 @@ export class BurgerMenu {
 
   public async clickResetApp() {
     await this.resetAppLink.click();
-  }
-
-  public async isMenuOpen(): Promise<boolean> {
-    return await this.closeButton.isVisible();
   }
 
   public async verifyMenuIsOpen() {

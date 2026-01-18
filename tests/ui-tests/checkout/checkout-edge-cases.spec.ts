@@ -10,7 +10,7 @@ test.describe("Checkout Edge Cases", () => {
       await productsPage.verifyPageLoaded();
 
       await productsPage.addProductToCart(expectedProducts[0].name);
-      await productsPage.clickCartIcon();
+      await productsPage.navigateToCart();
       await cartPage.verifyPageLoaded();
       await cartPage.clickCheckout();
     });
@@ -22,9 +22,7 @@ test.describe("Checkout Edge Cases", () => {
         await checkoutUserInformationPage.verifyPageLoaded();
 
         await checkoutUserInformationPage.fillCheckoutInformation(
-          checkoutInformation.validInfo.firstName,
-          checkoutInformation.validInfo.lastName,
-          checkoutInformation.validInfo.postalCode,
+          checkoutInformation.validInfo,
         );
         await checkoutUserInformationPage.clickContinue();
         await checkoutDetailsPage.verifyPageLoaded();

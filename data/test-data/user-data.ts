@@ -1,3 +1,8 @@
+export interface UserCredentials {
+  username: string;
+  password: string;
+}
+
 export const testUsers = {
   standardUser: {
     username: "standard_user",

@@ -19,8 +19,10 @@ export abstract class BasePage {
     await this.page.goto(this.url);
   }
 
-
-  public async compareScreenshot(name: string, deviation?: number): Promise<void> {
+  public async compareScreenshot(
+    name: string,
+    deviation?: number,
+  ): Promise<void> {
     await this.screenshotService.compareScreenshot(
       name,
       this.screenshotFolder,
