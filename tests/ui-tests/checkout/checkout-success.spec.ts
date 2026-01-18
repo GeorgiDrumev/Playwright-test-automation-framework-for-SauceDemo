@@ -16,15 +16,13 @@ test.describe("Checkout Success Tests", () => {
       await productsPage.verifyPageLoaded();
 
       await productsPage.addProductToCart(expectedProducts[0].name);
-      await productsPage.clickCartIcon();
+      await productsPage.navigateToCart();
       await cartPage.verifyPageLoaded();
       await cartPage.clickCheckout();
 
       await checkoutUserInformationPage.verifyPageLoaded();
       await checkoutUserInformationPage.fillCheckoutInformation(
-        checkoutInformation.validInfo.firstName,
-        checkoutInformation.validInfo.lastName,
-        checkoutInformation.validInfo.postalCode,
+        checkoutInformation.validInfo,
       );
       await checkoutUserInformationPage.clickContinue();
 

@@ -10,7 +10,8 @@
     "test:visual:update": "playwright test tests/visual-tests --update-snapshots",
     "test:performance": "playwright test tests/performance --project=chromium",
     "report": "playwright show-report",
-    "format": "prettier --write \"**/*.ts\" \"!node_modules/**\" \"!playwright-report/**\" \"!test-results/**\""
+    "format": "prettier --write \"**/*.ts\" \"!node_modules/**\" \"!playwright-report/**\" \"!test-results/**\"",
+    "prepare": "husky"
   },
   "keywords": [
     "playwright",
@@ -22,7 +23,12 @@
   "devDependencies": {
     "@playwright/test": "^1.49.0",
     "@types/node": "^22.10.5",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "prettier": "^3.8.0",
     "typescript": "^5.7.2"
+  },
+  "lint-staged": {
+    "*.ts": "prettier --write"
   }
 }

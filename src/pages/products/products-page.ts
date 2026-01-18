@@ -6,12 +6,11 @@ import { BasePage } from "@/pages/base-page";
 import { BurgerMenu } from "@/pages/components/burger-menu";
 
 export class ProductsPage extends BasePage {
-  readonly pageTitle: Locator;
-  readonly inventoryItems: Locator;
-  readonly sortDropdown: Locator;
-  readonly cartBadge: Locator;
-  readonly cartIcon: Locator;
-  readonly burgerMenuButton: Locator;
+  private readonly pageTitle: Locator;
+  private readonly inventoryItems: Locator;
+  private readonly sortDropdown: Locator;
+  private readonly cartBadge: Locator;
+  private readonly cartIcon: Locator;
   readonly waitUtils: WaitUtils;
   readonly url = "https://www.saucedemo.com/inventory.html";
   readonly screenshotFolder = "products";
@@ -24,22 +23,13 @@ export class ProductsPage extends BasePage {
     this.sortDropdown = page.locator(".product_sort_container");
     this.cartBadge = page.locator(".shopping_cart_badge");
     this.cartIcon = page.locator(".shopping_cart_link");
-    this.burgerMenuButton = page.locator("#react-burger-menu-btn");
     this.waitUtils = new WaitUtils(page);
     this.burgerMenu = new BurgerMenu(page);
   }
 
   public async goto() {
     await super.goto();
-    this.waitUtils.waitForDomContentLoaded();
-  }
-
-  public async isPageLoaded(): Promise<boolean> {
-    return await this.pageTitle.isVisible();
-  }
-
-  public async getPageTitle(): Promise<string> {
-    return (await this.pageTitle.textContent()) || "";
+    await this.waitUtils.waitForNetworkIdle();
   }
 
   public async getInventoryItemsCount(): Promise<number> {
@@ -100,17 +90,17 @@ export class ProductsPage extends BasePage {
     return "0";
   }
 
-  public async clickCartIcon() {
+  public async navigateToCart() {
     await this.cartIcon.click();
   }
 
-  public async clickProductName(productName: string) {
+  public async navigateToProductDetails(productName: string) {
     await this.page
       .locator(`.inventory_item_name:text("${productName}")`)
       .click();
   }
 
-  public async clickProductByIndex(index: number) {
+  public async navigateToProductDetailsByIndex(index: number) {
     await this.inventoryItems
       .nth(index)
       .locator(".inventory_item_name")

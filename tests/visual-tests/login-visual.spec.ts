@@ -1,4 +1,5 @@
 import { test } from "@/fixtures/base-ui-test";
+import { invalidCredentials } from "@data/test-data/user-data";
 
 test.describe("Login Page Visual Tests", () => {
   test(
@@ -15,7 +16,7 @@ test.describe("Login Page Visual Tests", () => {
     { tag: ["@authentication", "@visual"] },
     async ({ loginPage }) => {
       await loginPage.goto();
-      await loginPage.login("invalid_user", "invalid_password");
+      await loginPage.login(invalidCredentials.invalidUser);
       await loginPage.compareScreenshot("login-page-with-error");
     },
   );

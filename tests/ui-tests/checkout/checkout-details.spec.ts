@@ -15,15 +15,13 @@ test.describe("Checkout Details (Overview) Tests", () => {
       await productsPage.verifyPageLoaded();
 
       await productsPage.addProductToCart(expectedProducts[0].name);
-      await productsPage.clickCartIcon();
+      await productsPage.navigateToCart();
       await cartPage.verifyPageLoaded();
       await cartPage.clickCheckout();
 
       await checkoutUserInformationPage.verifyPageLoaded();
       await checkoutUserInformationPage.fillCheckoutInformation(
-        checkoutInformation.validInfo.firstName,
-        checkoutInformation.validInfo.lastName,
-        checkoutInformation.validInfo.postalCode,
+        checkoutInformation.validInfo,
       );
       await checkoutUserInformationPage.clickContinue();
     },
@@ -44,7 +42,7 @@ test.describe("Checkout Details (Overview) Tests", () => {
     { tag: ["@checkout", "@positive"] },
     async ({ checkoutDetailsPage }) => {
       await checkoutDetailsPage.verifyPageLoaded();
-      await checkoutDetailsPage.verifyTotalsCalculation();
+      await checkoutDetailsPage.verifyTotalsCalculation([expectedProducts[0]]);
     },
   );
 
@@ -75,22 +73,24 @@ test.describe("Checkout Details (Overview) Tests", () => {
       await productsPage.addProductToCart(expectedProducts[1].name);
       await productsPage.addProductToCart(expectedProducts[2].name);
 
-      await productsPage.clickCartIcon();
+      await productsPage.navigateToCart();
       await cartPage.verifyPageLoaded();
       await cartPage.verifyCartItemCount(3);
       await cartPage.clickCheckout();
 
       await checkoutUserInformationPage.verifyPageLoaded();
       await checkoutUserInformationPage.fillCheckoutInformation(
-        checkoutInformation.validInfo.firstName,
-        checkoutInformation.validInfo.lastName,
-        checkoutInformation.validInfo.postalCode,
+        checkoutInformation.validInfo,
       );
       await checkoutUserInformationPage.clickContinue();
 
       await checkoutDetailsPage.verifyPageLoaded();
       await checkoutDetailsPage.verifyItemCount(3);
-      await checkoutDetailsPage.verifyTotalsCalculation();
+      await checkoutDetailsPage.verifyTotalsCalculation([
+        expectedProducts[0],
+        expectedProducts[1],
+        expectedProducts[2],
+      ]);
     },
   );
 

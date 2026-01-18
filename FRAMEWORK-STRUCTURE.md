@@ -197,6 +197,8 @@ tests/                  # Test Suites
 - **Path aliases** (@/ for src, @data for test data)
 - **Consistent naming conventions**
 - **KISS principle** (Keep It Simple, Stupid)
+- **Code Formatter** - Prettier integrated for automatic code formatting (`npm run format`)
+- **Git Hooks** - Husky and lint-staged run Prettier automatically on staged files before every commit. To enable hooks after cloning, run `npm install` (which triggers Husky's setup via the `prepare` script).
 
 ---
 

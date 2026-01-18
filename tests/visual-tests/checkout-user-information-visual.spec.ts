@@ -7,7 +7,7 @@ test.describe("Checkout User Information Page Visual Tests", () => {
     await loginPage.login();
     await productsPage.verifyPageLoaded();
     await productsPage.addProductToCart(expectedProducts[0].name);
-    await productsPage.clickCartIcon();
+    await productsPage.navigateToCart();
     await cartPage.verifyPageLoaded();
     await cartPage.clickCheckout();
   });

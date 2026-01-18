@@ -1,16 +1,18 @@
 import { Page, Locator, expect } from "@playwright/test";
 import { WaitUtils } from "@/utils/wait-utils";
+import { CheckoutUtils } from "@/utils/checkout-utils";
 import { BasePage } from "@/pages/base-page";
+import { ProductData } from "@data/test-data/product-data";
 
 export class CheckoutDetailsPage extends BasePage {
-  readonly pageTitle: Locator;
-  readonly waitUtils: WaitUtils;
-  readonly cartItems: Locator;
-  readonly subtotalLabel: Locator;
-  readonly taxLabel: Locator;
-  readonly totalLabel: Locator;
-  readonly finishButton: Locator;
-  readonly cancelButton: Locator;
+  private readonly pageTitle: Locator;
+  private readonly waitUtils: WaitUtils;
+  private readonly cartItems: Locator;
+  private readonly subtotalLabel: Locator;
+  private readonly taxLabel: Locator;
+  private readonly totalLabel: Locator;
+  private readonly finishButton: Locator;
+  private readonly cancelButton: Locator;
   readonly url = "https://www.saucedemo.com/checkout-step-two.html";
   readonly screenshotFolder = "checkout";
 
@@ -24,26 +26,6 @@ export class CheckoutDetailsPage extends BasePage {
     this.totalLabel = page.locator(".summary_total_label");
     this.finishButton = page.locator('[data-test="finish"]');
     this.cancelButton = page.locator('[data-test="cancel"]');
-  }
-
-  public async getPageTitle(): Promise<string> {
-    return (await this.pageTitle.textContent()) || "";
-  }
-
-  public async getCartItemsCount(): Promise<number> {
-    return await this.cartItems.count();
-  }
-
-  public async getSubtotal(): Promise<string> {
-    return (await this.subtotalLabel.textContent()) || "";
-  }
-
-  public async getTax(): Promise<string> {
-    return (await this.taxLabel.textContent()) || "";
-  }
-
-  public async getTotal(): Promise<string> {
-    return (await this.totalLabel.textContent()) || "";
   }
 
   public async clickFinish() {
@@ -61,7 +43,7 @@ export class CheckoutDetailsPage extends BasePage {
   }
 
   public async verifyItemCount(expectedCount: number) {
-    const actualCount = await this.getCartItemsCount();
+    const actualCount = await this.cartItems.count();
     expect(actualCount).toBe(expectedCount);
   }
 
@@ -71,16 +53,27 @@ export class CheckoutDetailsPage extends BasePage {
     await expect(this.totalLabel).toBeVisible();
   }
 
-  public async verifyTotalsCalculation() {
-    const subtotalText = await this.getSubtotal();
-    const taxText = await this.getTax();
-    const totalText = await this.getTotal();
+  public async verifyTotalsCalculation(products: ProductData[]) {
+    const expectedSubtotal = CheckoutUtils.calculateSubtotalAmount(products);
+    const expectedTax = CheckoutUtils.calculateTaxAmount(expectedSubtotal);
+    const expectedTotal = CheckoutUtils.calculateTotalAmount(
+      expectedSubtotal,
+      expectedTax,
+    );
 
-    const subtotal = parseFloat(subtotalText.replace("Item total: $", ""));
-    const tax = parseFloat(taxText.replace("Tax: $", ""));
-    const total = parseFloat(totalText.replace("Total: $", ""));
+    const subtotalText = (await this.subtotalLabel.textContent()) || "";
+    const taxText = (await this.taxLabel.textContent()) || "";
+    const totalText = (await this.totalLabel.textContent()) || "";
 
-    const expectedTotal = parseFloat((subtotal + tax).toFixed(2));
-    expect(total).toBe(expectedTotal);
+    const actualSubtotal = CheckoutUtils.parsePrice(
+      subtotalText,
+      "Item total: $",
+    );
+    const actualTax = CheckoutUtils.parsePrice(taxText, "Tax: $");
+    const actualTotal = CheckoutUtils.parsePrice(totalText, "Total: $");
+
+    expect(actualSubtotal).toBe(expectedSubtotal);
+    expect(actualTax).toBe(expectedTax);
+    expect(actualTotal).toBe(expectedTotal);
   }
 }

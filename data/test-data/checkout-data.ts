@@ -1,3 +1,9 @@
+export interface CheckoutInformation {
+  firstName: string;
+  lastName: string;
+  postalCode: string;
+}
+
 export const checkoutInformation = {
   validInfo: {
     firstName: "John",

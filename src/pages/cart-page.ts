@@ -3,12 +3,12 @@ import { BasePage } from "@/pages/base-page";
 import { BurgerMenu } from "@/pages/components/burger-menu";
 
 export class CartPage extends BasePage {
-  readonly pageTitle: Locator;
-  readonly cartItems: Locator;
-  readonly itemName: Locator;
-  readonly removeButton: Locator;
-  readonly continueShoppingButton: Locator;
-  readonly checkoutButton: Locator;
+  private readonly pageTitle: Locator;
+  private readonly cartItems: Locator;
+  private readonly itemName: Locator;
+  private readonly removeButton: Locator;
+  private readonly continueShoppingButton: Locator;
+  private readonly checkoutButton: Locator;
   readonly burgerMenu: BurgerMenu;
   readonly url = "https://www.saucedemo.com/cart.html";
   readonly screenshotFolder = "cart";
@@ -24,10 +24,6 @@ export class CartPage extends BasePage {
     );
     this.checkoutButton = page.locator('[data-test="checkout"]');
     this.burgerMenu = new BurgerMenu(page);
-  }
-
-  public async getPageTitle(): Promise<string> {
-    return (await this.pageTitle.textContent()) || "";
   }
 
   public async getCartItemsCount(): Promise<number> {
@@ -64,14 +60,6 @@ export class CartPage extends BasePage {
       .click();
   }
 
-  public async clickItemByIndex(index: number) {
-    await this.cartItems.nth(index).locator(this.itemName).click();
-  }
-
-  public async isCartEmpty(): Promise<boolean> {
-    return (await this.getCartItemsCount()) === 0;
-  }
-
   public async verifyPageLoaded() {
     await expect(this.pageTitle).toBeVisible();
     await expect(this.pageTitle).toHaveText("Your Cart");
@@ -83,8 +71,8 @@ export class CartPage extends BasePage {
   }
 
   public async verifyCartIsEmpty() {
-    const isEmpty = await this.isCartEmpty();
-    expect(isEmpty).toBeTruthy();
+    const count = await this.getCartItemsCount();
+    expect(count).toBe(0);
   }
 
   public async verifyProductInCart(productName: string) {

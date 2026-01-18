@@ -1,12 +1,12 @@
 import { Page, Locator, expect } from "@playwright/test";
-import { testUsers } from "@data/test-data/user-data";
+import { testUsers, UserCredentials } from "@data/test-data/user-data";
 import { BasePage } from "@/pages/base-page";
 
 export class LoginPage extends BasePage {
-  readonly usernameInput: Locator;
-  readonly passwordInput: Locator;
-  readonly loginButton: Locator;
-  readonly errorMessage: Locator;
+  private readonly usernameInput: Locator;
+  private readonly passwordInput: Locator;
+  private readonly loginButton: Locator;
+  private readonly errorMessage: Locator;
   readonly url = "https://www.saucedemo.com/";
   readonly screenshotFolder = "login";
 
@@ -18,21 +18,14 @@ export class LoginPage extends BasePage {
     this.errorMessage = page.locator('[data-test="error"]');
   }
 
-  public async login(
-    username: string = testUsers.standardUser.username,
-    password: string = testUsers.standardUser.password,
-  ) {
-    await this.usernameInput.fill(username);
-    await this.passwordInput.fill(password);
+  public async login(credentials: UserCredentials = testUsers.standardUser) {
+    await this.usernameInput.fill(credentials.username);
+    await this.passwordInput.fill(credentials.password);
     await this.loginButton.click();
   }
 
   public async getErrorMessage(): Promise<string> {
     return (await this.errorMessage.textContent()) || "";
-  }
-
-  public async isErrorDisplayed(): Promise<boolean> {
-    return await this.errorMessage.isVisible();
   }
 
   public async verifyPageLoaded() {

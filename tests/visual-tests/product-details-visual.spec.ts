@@ -12,7 +12,7 @@ test.describe("Product Details Page Visual Tests", () => {
     { tag: ["@products", "@visual"] },
     async ({ productsPage, productDetailsPage }) => {
       await productsPage.verifyPageLoaded();
-      await productsPage.clickProductName(expectedProducts[0].name);
+      await productsPage.navigateToProductDetails(expectedProducts[0].name);
       await productDetailsPage.compareScreenshot("product-details-page");
     },
   );
@@ -21,10 +21,11 @@ test.describe("Product Details Page Visual Tests", () => {
     { tag: ["@products", "@visual"] },
     async ({ productsPage, productDetailsPage }) => {
       await productsPage.verifyPageLoaded();
-      await productsPage.clickProductName(expectedProducts[0].name);
+      await productsPage.navigateToProductDetails(expectedProducts[0].name);
       await productDetailsPage.addToCart();
       await productDetailsPage.compareScreenshot(
         "product-details-page-item-in-cart",
       );
     },
-  );});
+  );
+});

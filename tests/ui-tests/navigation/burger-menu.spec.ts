@@ -33,7 +33,7 @@ test.describe("Burger Menu Tests", () => {
     "should navigate to All Items",
     { tag: ["@navigation", "@positive"] },
     async ({ productsPage }) => {
-      await productsPage.clickProductByIndex(0);
+      await productsPage.navigateToProductDetailsByIndex(0);
 
       await productsPage.burgerMenu.open();
       await productsPage.burgerMenu.clickAllItems();
@@ -73,7 +73,7 @@ test.describe("Burger Menu Tests", () => {
     { tag: ["@navigation", "@positive"] },
     async ({ productsPage, cartPage }) => {
       await productsPage.addProductToCart("Sauce Labs Backpack");
-      await productsPage.clickCartIcon();
+      await productsPage.navigateToCart();
       await cartPage.verifyPageLoaded();
 
       await cartPage.burgerMenu.open();

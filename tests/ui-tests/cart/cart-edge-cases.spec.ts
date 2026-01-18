@@ -12,7 +12,7 @@ test.describe("Cart Edge Cases", () => {
     "should not allow checkout with empty cart",
     { tag: ["@cart", "@edge-case", "@known-issue"] },
     async ({ productsPage, cartPage }) => {
-      await productsPage.clickCartIcon();
+      await productsPage.navigateToCart();
       await cartPage.verifyPageLoaded();
       await cartPage.verifyCartIsEmpty();
       await cartPage.verifyCheckoutButtonNotVisible();
@@ -24,7 +24,7 @@ test.describe("Cart Edge Cases", () => {
     { tag: ["@cart", "@edge-case", "@known-issue"] },
     async ({ productsPage, cartPage, checkoutUserInformationPage }) => {
       await productsPage.addProductToCart(expectedProducts[0].name);
-      await productsPage.clickCartIcon();
+      await productsPage.navigateToCart();
       await cartPage.verifyPageLoaded();
       await cartPage.clickCheckout();
 
@@ -45,7 +45,7 @@ test.describe("Cart Edge Cases", () => {
     { tag: ["@cart", "@edge-case"] },
     async ({ productsPage, cartPage }) => {
       await productsPage.addProductToCart(expectedProducts[0].name);
-      await productsPage.clickCartIcon();
+      await productsPage.navigateToCart();
       await cartPage.verifyCartItemCount(1);
 
       await cartPage.removeItemByIndex(0);
@@ -53,7 +53,7 @@ test.describe("Cart Edge Cases", () => {
 
       await cartPage.clickContinueShopping();
       await productsPage.addProductToCart(expectedProducts[1].name);
-      await productsPage.clickCartIcon();
+      await productsPage.navigateToCart();
       await cartPage.verifyCartItemCount(1);
     },
   );
@@ -63,7 +63,7 @@ test.describe("Cart Edge Cases", () => {
     { tag: ["@cart", "@edge-case"] },
     async ({ productsPage, cartPage, page }) => {
       await productsPage.addProductToCart(expectedProducts[0].name);
-      await productsPage.clickCartIcon();
+      await productsPage.navigateToCart();
       await cartPage.verifyPageLoaded();
 
       await page.goBack();
@@ -83,14 +83,14 @@ test.describe("Cart Edge Cases", () => {
       await productsPage.addProductToCart(expectedProducts[1].name);
       await productsPage.addProductToCart(expectedProducts[2].name);
 
-      await productsPage.clickCartIcon();
+      await productsPage.navigateToCart();
       await cartPage.verifyCartItemCount(3);
 
       await cartPage.clickContinueShopping();
       await productsPage.removeProductFromCart(expectedProducts[0].name);
       await productsPage.addProductToCart(expectedProducts[3].name);
 
-      await productsPage.clickCartIcon();
+      await productsPage.navigateToCart();
       await cartPage.verifyCartItemCount(3);
       await cartPage.verifyProductsInCart([
         expectedProducts[1].name,
@@ -111,7 +111,7 @@ test.describe("Cart Edge Cases", () => {
       await productsPage.verifyPageLoaded();
       await productsPage.verifyCartBadgeCount("2");
 
-      await productsPage.clickCartIcon();
+      await productsPage.navigateToCart();
       await cartPage.verifyCartItemCount(2);
     },
   );
