@@ -1,0 +1,12 @@
+export const errorMessages = {
+  invalidCredentials:
+    "Epic sadface: Username and password do not match any user in this service",
+  usernameRequired: "Epic sadface: Username is required",
+  passwordRequired: "Epic sadface: Password is required",
+  lockedOut: "Epic sadface: Sorry, this user has been locked out.",
+  firstNameRequired: "Error: First Name is required",
+  lastNameRequired: "Error: Last Name is required",
+  postalCodeRequired: "Error: Postal Code is required",
+  unauthorizedAccess:
+    "Epic sadface: You can only access '/inventory.html' when you are logged in.",
+};

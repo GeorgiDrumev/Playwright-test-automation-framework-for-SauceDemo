@@ -1,0 +1,28 @@
+{
+  "name": "test-framework-saucedemo",
+  "version": "1.0.0",
+  "description": "Playwright test automation project for saucedemo.com",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed --workers=4",
+    "test:ui": "playwright test --ui",
+    "test:visual": "playwright test tests/visual-tests",
+    "test:visual:update": "playwright test tests/visual-tests --update-snapshots",
+    "test:performance": "playwright test tests/performance --project=chromium",
+    "report": "playwright show-report",
+    "format": "prettier --write \"**/*.ts\" \"!node_modules/**\" \"!playwright-report/**\" \"!test-results/**\""
+  },
+  "keywords": [
+    "playwright",
+    "automation",
+    "testing"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^22.10.5",
+    "prettier": "^3.8.0",
+    "typescript": "^5.7.2"
+  }
+}
