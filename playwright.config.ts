@@ -4,9 +4,9 @@ export default defineConfig({
   testDir: "./tests",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
-  reporter: [["html", { outputFolder: "playwright-report" }], ["list"]],
+  retries: 0,
+  workers: undefined,
+  reporter: [["html", { outputFolder: "playwright-report" }], ["list"], ["github"]],
   use: {
     baseURL: "https://www.saucedemo.com",
     trace: "retain-on-failure",
@@ -20,16 +20,21 @@ export default defineConfig({
     },
   },
   snapshotPathTemplate: "data/screenshots/{testFilePath}/{projectName}/{arg}{ext}",
-  // Screenshot retry configuration
   timeout: 15000,
   projects: [
     {
       name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
+      use: { 
+        ...devices["Desktop Chrome"],
+        viewport: { width: 1280, height: 720 },
+      },
     },
     {
       name: 'safari-mobile',
-      use: { ...devices['iPhone 14 Pro'] },
+      use: { 
+        ...devices['iPhone 14 Pro'],
+        viewport: { width: 393, height: 852 },
+      },
     },
   ],
 });
