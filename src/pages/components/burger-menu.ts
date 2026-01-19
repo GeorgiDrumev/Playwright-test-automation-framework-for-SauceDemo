@@ -1,4 +1,5 @@
 import { Page, Locator, expect } from "@playwright/test";
+import { WaitUtils } from "@/utils/wait-utils";
 
 export class BurgerMenu {
   private readonly page: Page;
@@ -9,6 +10,7 @@ export class BurgerMenu {
   private readonly logoutLink: Locator;
   private readonly resetAppLink: Locator;
   private readonly menuOverlay: Locator;
+  private readonly waitUtils: WaitUtils;
 
   constructor(page: Page) {
     this.page = page;
@@ -19,9 +21,11 @@ export class BurgerMenu {
     this.logoutLink = page.locator('[data-test="logout-sidebar-link"]');
     this.resetAppLink = page.locator('[data-test="reset-sidebar-link"]');
     this.menuOverlay = page.locator(".bm-overlay");
+    this.waitUtils = new WaitUtils(page);
   }
 
   public async open() {
+    await this.waitUtils.waitForDomContentLoaded();
     await this.menuButton.click();
     await this.allItemsLink.waitFor({ state: "visible" });
   }
