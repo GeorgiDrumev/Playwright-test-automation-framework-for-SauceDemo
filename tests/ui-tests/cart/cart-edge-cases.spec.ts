@@ -22,10 +22,8 @@ test.describe("Cart Edge Cases", () => {
   test(
     "should prevent checkout after removing all items",
     { tag: ["@cart", "@edge-case", "@known-issue"] },
-    async ({ productsPage, cartPage, checkoutUserInformationPage }) => {
-      await productsPage.addProductToCart(expectedProducts[0].name);
-      await productsPage.navigateToCart();
-      await cartPage.verifyPageLoaded();
+    async ({ checkoutFlow, cartPage, checkoutUserInformationPage }) => {
+      await checkoutFlow.addProductsAndNavigateToCart([expectedProducts[0]]);
       await cartPage.clickCheckout();
 
       await checkoutUserInformationPage.verifyPageLoaded();
@@ -43,9 +41,8 @@ test.describe("Cart Edge Cases", () => {
   test(
     "should handle removing all items and then adding again",
     { tag: ["@cart", "@edge-case"] },
-    async ({ productsPage, cartPage }) => {
-      await productsPage.addProductToCart(expectedProducts[0].name);
-      await productsPage.navigateToCart();
+    async ({ productsPage, cartPage, checkoutFlow }) => {
+      await checkoutFlow.addProductsAndNavigateToCart([expectedProducts[0]]);
       await cartPage.verifyCartItemCount(1);
 
       await cartPage.removeItemByIndex(0);
@@ -61,10 +58,8 @@ test.describe("Cart Edge Cases", () => {
   test(
     "should handle browser back navigation from cart",
     { tag: ["@cart", "@edge-case"] },
-    async ({ productsPage, cartPage, page }) => {
-      await productsPage.addProductToCart(expectedProducts[0].name);
-      await productsPage.navigateToCart();
-      await cartPage.verifyPageLoaded();
+    async ({ productsPage, cartPage, page, checkoutFlow }) => {
+      await checkoutFlow.addProductsAndNavigateToCart([expectedProducts[0]]);
 
       await page.goBack();
       await productsPage.verifyPageLoaded();
@@ -78,12 +73,12 @@ test.describe("Cart Edge Cases", () => {
   test(
     "should handle concurrent cart modifications",
     { tag: ["@cart", "@edge-case"] },
-    async ({ productsPage, cartPage }) => {
-      await productsPage.addProductToCart(expectedProducts[0].name);
-      await productsPage.addProductToCart(expectedProducts[1].name);
-      await productsPage.addProductToCart(expectedProducts[2].name);
-
-      await productsPage.navigateToCart();
+    async ({ productsPage, cartPage, checkoutFlow }) => {
+      await checkoutFlow.addProductsAndNavigateToCart([
+        expectedProducts[0],
+        expectedProducts[1],
+        expectedProducts[2],
+      ]);
       await cartPage.verifyCartItemCount(3);
 
       await cartPage.clickContinueShopping();

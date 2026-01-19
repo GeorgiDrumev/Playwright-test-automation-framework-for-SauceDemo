@@ -3,29 +3,14 @@ import { checkoutInformation } from "@data/test-data";
 import { expectedProducts } from "@data/test-data/product-data";
 
 test.describe("Checkout Details (Overview) Tests", () => {
-  test.beforeEach(
-    async ({
-      loginPage,
-      productsPage,
-      cartPage,
-      checkoutUserInformationPage,
-    }) => {
-      await loginPage.goto();
-      await loginPage.login();
-      await productsPage.verifyPageLoaded();
+  test.beforeEach(async ({ loginPage, productsPage, checkoutFlow }) => {
+    await loginPage.goto();
+    await loginPage.login();
+    await productsPage.verifyPageLoaded();
 
-      await productsPage.addProductToCart(expectedProducts[0].name);
-      await productsPage.navigateToCart();
-      await cartPage.verifyPageLoaded();
-      await cartPage.clickCheckout();
-
-      await checkoutUserInformationPage.verifyPageLoaded();
-      await checkoutUserInformationPage.fillCheckoutInformation(
-        checkoutInformation.validInfo,
-      );
-      await checkoutUserInformationPage.clickContinue();
-    },
-  );
+    await checkoutFlow.addProductsAndNavigateToCart([expectedProducts[0]]);
+    await checkoutFlow.navigateToCheckoutDetails(checkoutInformation.validInfo);
+  });
 
   test(
     "should display order summary correctly",
@@ -60,29 +45,18 @@ test.describe("Checkout Details (Overview) Tests", () => {
   test(
     "should calculate correct totals with multiple items",
     { tag: ["@checkout", "@positive"] },
-    async ({
-      checkoutDetailsPage,
-      productsPage,
-      cartPage,
-      checkoutUserInformationPage,
-    }) => {
+    async ({ checkoutDetailsPage, productsPage, checkoutFlow }) => {
       await checkoutDetailsPage.verifyPageLoaded();
       await checkoutDetailsPage.clickCancel();
 
       await productsPage.verifyPageLoaded();
       await productsPage.addProductToCart(expectedProducts[1].name);
       await productsPage.addProductToCart(expectedProducts[2].name);
-
       await productsPage.navigateToCart();
-      await cartPage.verifyPageLoaded();
-      await cartPage.verifyCartItemCount(3);
-      await cartPage.clickCheckout();
 
-      await checkoutUserInformationPage.verifyPageLoaded();
-      await checkoutUserInformationPage.fillCheckoutInformation(
+      await checkoutFlow.navigateToCheckoutDetails(
         checkoutInformation.validInfo,
       );
-      await checkoutUserInformationPage.clickContinue();
 
       await checkoutDetailsPage.verifyPageLoaded();
       await checkoutDetailsPage.verifyItemCount(3);

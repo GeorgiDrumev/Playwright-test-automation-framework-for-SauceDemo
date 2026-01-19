@@ -2,14 +2,12 @@ import { test } from "@/fixtures/base-ui-test";
 import { expectedProducts } from "@data/test-data/product-data";
 
 test.describe("Checkout User Information Page Visual Tests", () => {
-  test.beforeEach(async ({ loginPage, productsPage, cartPage }) => {
+  test.beforeEach(async ({ loginPage, productsPage, checkoutFlow }) => {
     await loginPage.goto();
     await loginPage.login();
     await productsPage.verifyPageLoaded();
-    await productsPage.addProductToCart(expectedProducts[0].name);
-    await productsPage.navigateToCart();
-    await cartPage.verifyPageLoaded();
-    await cartPage.clickCheckout();
+    await checkoutFlow.addProductsAndNavigateToCart([expectedProducts[0]]);
+    await checkoutFlow.proceedToCheckoutInformation();
   });
 
   test(

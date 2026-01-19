@@ -7,6 +7,7 @@ import { CheckoutUserInformationPage } from "@/pages/checkout/checkout-user-info
 import { CheckoutDetailsPage } from "@/pages/checkout/checkout-details-page";
 import { CheckoutSuccessPage } from "@/pages/checkout/checkout-success-page";
 import { BurgerMenu } from "@/pages/components/burger-menu";
+import { CheckoutFlow } from "@/flows/checkout-flow";
 
 type PageFixtures = {
   loginPage: LoginPage;
@@ -17,6 +18,7 @@ type PageFixtures = {
   checkoutDetailsPage: CheckoutDetailsPage;
   checkoutSuccessPage: CheckoutSuccessPage;
   burgerMenu: BurgerMenu;
+  checkoutFlow: CheckoutFlow;
 };
 
 export const test = base.extend<PageFixtures>({
@@ -50,6 +52,27 @@ export const test = base.extend<PageFixtures>({
 
   burgerMenu: async ({ page }, use) => {
     await use(new BurgerMenu(page));
+  },
+
+  checkoutFlow: async (
+    {
+      productsPage,
+      cartPage,
+      checkoutUserInformationPage,
+      checkoutDetailsPage,
+      checkoutSuccessPage,
+    },
+    use,
+  ) => {
+    await use(
+      new CheckoutFlow(
+        productsPage,
+        cartPage,
+        checkoutUserInformationPage,
+        checkoutDetailsPage,
+        checkoutSuccessPage,
+      ),
+    );
   },
 });
 

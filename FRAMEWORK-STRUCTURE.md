@@ -100,7 +100,19 @@ Using page objects to store locators, assertions, and page logic. Because the st
 - Consistent behavior for shared components
 - Easy to update common elements
 
-### 6. Retry Pattern
+### 6. Facade Pattern
+**Implementation:**
+- `CheckoutFlow` facade in `src/flows/` directory
+- Encapsulates multi-step checkout workflows
+- Provides high-level methods for common test scenarios
+
+**Benefits:**
+- Reduces code duplication across cart and checkout tests
+- Simplifies test code
+- Provides reusable workflow abstractions
+- Easy to maintain and update workflows in one place
+
+### 7. Retry Pattern
 **Implementation:**
 - `ScreenshotService` with configurable retry attempts (5 retries, 2000ms delay)
 - Handles flaky screenshot comparisons
@@ -111,7 +123,7 @@ Using page objects to store locators, assertions, and page logic. Because the st
 - Improves test reliability
 - Reduces false negatives
 
-### 7. Repository Pattern (Adapted)
+### 8. Repository Pattern (Adapted)
 **Implementation:**
 - Test data files act as data repositories
 - Centralized data access through module imports
@@ -181,6 +193,8 @@ src/
 │   ├── products/
 │   ├── checkout/
 │   └── components/
+├── flows/              # Workflow Facades
+│   └── checkout-flow.ts
 ├── services/           # Service Layer
 │   └── screenshot-service.ts
 ├── utils/              # Utilities

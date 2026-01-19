@@ -21,15 +21,13 @@ test.describe("Cart Tests", () => {
   test(
     "should display products added to cart",
     { tag: ["@cart", "@positive"] },
-    async ({ productsPage, cartPage }) => {
-      const product1 = expectedProducts[0].name;
-      const product2 = expectedProducts[1].name;
+    async ({ cartPage, checkoutFlow }) => {
+      const product1 = expectedProducts[0];
+      const product2 = expectedProducts[1];
 
-      await productsPage.addProductToCart(product1);
-      await productsPage.addProductToCart(product2);
-      await productsPage.navigateToCart();
+      await checkoutFlow.addProductsAndNavigateToCart([product1, product2]);
 
-      await cartPage.verifyProductsInCart([product1, product2]);
+      await cartPage.verifyProductsInCart([product1.name, product2.name]);
       await cartPage.verifyCartItemCount(2);
     },
   );
@@ -37,14 +35,13 @@ test.describe("Cart Tests", () => {
   test(
     "should remove product from cart",
     { tag: ["@cart", "@positive"] },
-    async ({ productsPage, cartPage }) => {
-      const product = expectedProducts[0].name;
+    async ({ cartPage, checkoutFlow }) => {
+      const product = expectedProducts[0];
 
-      await productsPage.addProductToCart(product);
-      await productsPage.navigateToCart();
-      await cartPage.verifyProductInCart(product);
+      await checkoutFlow.addProductsAndNavigateToCart([product]);
+      await cartPage.verifyProductInCart(product.name);
 
-      await cartPage.removeItemByName(product);
+      await cartPage.removeItemByName(product.name);
       await cartPage.verifyCartIsEmpty();
     },
   );
@@ -52,11 +49,12 @@ test.describe("Cart Tests", () => {
   test(
     "should remove multiple products from cart",
     { tag: ["@cart", "@positive"] },
-    async ({ productsPage, cartPage }) => {
-      await productsPage.addProductToCart(expectedProducts[0].name);
-      await productsPage.addProductToCart(expectedProducts[1].name);
-      await productsPage.addProductToCart(expectedProducts[2].name);
-      await productsPage.navigateToCart();
+    async ({ cartPage, checkoutFlow }) => {
+      await checkoutFlow.addProductsAndNavigateToCart([
+        expectedProducts[0],
+        expectedProducts[1],
+        expectedProducts[2],
+      ]);
 
       await cartPage.verifyCartItemCount(3);
 
@@ -86,9 +84,8 @@ test.describe("Cart Tests", () => {
   test(
     "should navigate to checkout page",
     { tag: ["@cart", "@positive"] },
-    async ({ productsPage, cartPage, checkoutUserInformationPage }) => {
-      await productsPage.addProductToCart(expectedProducts[0].name);
-      await productsPage.navigateToCart();
+    async ({ cartPage, checkoutUserInformationPage, checkoutFlow }) => {
+      await checkoutFlow.addProductsAndNavigateToCart([expectedProducts[0]]);
 
       await cartPage.clickCheckout();
       await checkoutUserInformationPage.verifyPageLoaded();
@@ -98,12 +95,10 @@ test.describe("Cart Tests", () => {
   test(
     "should navigate to product details page when clicking item",
     { tag: ["@cart", "@positive", "@known-issue"] },
-    async ({ productsPage, cartPage, productDetailsPage }) => {
+    async ({ cartPage, productDetailsPage, checkoutFlow }) => {
       const product = expectedProducts[0];
 
-      await productsPage.addProductToCart(product.name);
-      await productsPage.navigateToCart();
-      await cartPage.verifyPageLoaded();
+      await checkoutFlow.addProductsAndNavigateToCart([product]);
 
       await cartPage.clickItemByName(product.name);
       await productDetailsPage.verifyProductDetails(product);

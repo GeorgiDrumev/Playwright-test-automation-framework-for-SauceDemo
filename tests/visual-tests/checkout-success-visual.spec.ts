@@ -11,26 +11,11 @@ test.describe("Checkout Success Page Visual Tests", () => {
   test(
     "should match checkout success page",
     { tag: ["@checkout", "@visual"] },
-    async ({
-      productsPage,
-      cartPage,
-      checkoutUserInformationPage,
-      checkoutDetailsPage,
-      checkoutSuccessPage,
-    }) => {
-      await productsPage.verifyPageLoaded();
-      await productsPage.addProductToCart(expectedProducts[0].name);
-      await productsPage.navigateToCart();
-      await cartPage.verifyPageLoaded();
-      await cartPage.clickCheckout();
-      await checkoutUserInformationPage.verifyPageLoaded();
-      await checkoutUserInformationPage.fillCheckoutInformation(
+    async ({ checkoutFlow, checkoutSuccessPage }) => {
+      await checkoutFlow.completeCheckoutFlow(
+        [expectedProducts[0]],
         checkoutInformation.validInfo,
       );
-      await checkoutUserInformationPage.clickContinue();
-      await checkoutDetailsPage.verifyPageLoaded();
-      await checkoutDetailsPage.clickFinish();
-      await checkoutSuccessPage.verifyPageLoaded();
       await checkoutSuccessPage.compareScreenshot("checkout-success-page");
     },
   );
