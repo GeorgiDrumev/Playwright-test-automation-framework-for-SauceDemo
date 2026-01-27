@@ -8,6 +8,7 @@ export default defineConfig({
   workers: undefined,
   reporter: [
     ["html", { outputFolder: "playwright-report" }],
+    ["junit", { outputFile: "test-results/junit.xml" }],
     ["list"],
     ["github"],
   ],
